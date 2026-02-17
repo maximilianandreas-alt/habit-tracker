@@ -1,58 +1,30 @@
-import { useState, useEffect } from 'react'
-import HabitForm from './components/HabitForm'
-import HabitList from './components/HabitList'
-import Header from './components/Header'
+// src/App.jsx
+import { useState } from 'react';
+import Header from './components/Header';
+import HabitList from './components/HabitList';
+import './App.css';
 
 function App() {
-  // Das Herzstück: Ein Array von Objekten
-  const [habits, setHabits] = useState([]);
+  const [habits, setHabits] = useState([
+    { id: 1, name: 'Wasser trinken', goal: 3, current: 0, completed: false }
+  ]);
 
-  // Funktion zum Hinzufügen (wird an HabitForm übergeben)
-  const addHabit = (name, goal) => {
-    const newHabit = {
-      id: crypto.randomUUID(),
-      name: name,
-      goal: parseInt(goal),
-      current: 0,
-      completed: false
-    };
-    setHabits([...habits, newHabit]);
+  const toggleIncrement = (id) => {
+    setHabits(habits.map(habit => {
+      if (habit.id === id) {
+        const newCurrent = habit.current + 1;
+        return { ...habit, current: newCurrent, completed: newCurrent >= habit.goal };
+      }
+      return habit;
+    }));
   };
 
   return (
-    <div className="app-container">
+    <div className="App">
       <Header />
-      <HabitForm onAdd={addHabit} />
-      <HabitList habits={habits} setHabits={setHabits} />
+      {/* Wir geben die Daten (habits) und die Funktion (onIncrement) weiter */}
+      <HabitList habits={habits} onIncrement={toggleIncrement} />
     </div>
   );
 }
-
-// 1. Beim Laden: Daten aus LocalStorage holen
-useEffect(() => {
-  const savedHabits = localStorage.getItem('my-habits');
-  if (savedHabits) setHabits(JSON.parse(savedHabits));
-}, []);
-
-// 2. Bei jeder Änderung: Daten speichern
-useEffect(() => {
-  localStorage.setItem('my-habits', JSON.stringify(habits));
-}, [habits]);
-
-// App.jsx
-
-const toggleIncrement = (id) => {
-  setHabits(habits.map(habit => {
-    if (habit.id === id) {
-      // Wir erhöhen 'current', aber nur wenn das Ziel noch nicht überschritten ist (optional)
-      const newCurrent = habit.current + 1;
-      return { 
-        ...habit, 
-        current: newCurrent,
-        // FR007: Hier setzen wir den Status 'completed' auf true, wenn das Ziel erreicht ist
-        completed: newCurrent >= habit.goal 
-      };
-    }
-    return habit;
-  }));
-};
+export default App;
