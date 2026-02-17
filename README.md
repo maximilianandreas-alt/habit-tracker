@@ -2,7 +2,7 @@
 
 A simple and effective Habit Tracker built to help users stay on top of their daily goals like exercising, reading, or drinking water. This project was developed as a focused mini-project to master React fundamentals.
 
->> Link to live-app: https://habit-tracker-murex-ten.vercel.app/
+- Link to live-app: https://habit-tracker-murex-ten.vercel.app/
 
 ## 🚀 Key Features
 
